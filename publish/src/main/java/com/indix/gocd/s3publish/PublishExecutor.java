@@ -42,6 +42,9 @@ public class PublishExecutor implements TaskExecutor {
         if (env.isAbsent(AWS_SECRET_ACCESS_KEY)) return envNotFound(AWS_SECRET_ACCESS_KEY);
         if (env.isAbsent(GO_ARTIFACTS_S3_BUCKET)) return envNotFound(GO_ARTIFACTS_S3_BUCKET);
         if (env.isAbsent(GO_SERVER_DASHBOARD_URL)) return envNotFound(GO_SERVER_DASHBOARD_URL);
+        
+        String s3Path = env.get(S3_PATH);
+        context.console().printLine("Use s3_path: " + s3Path);
 
         final String bucket = env.get(GO_ARTIFACTS_S3_BUCKET);
         final S3ArtifactStore store = new S3ArtifactStore(s3Client(env), bucket);

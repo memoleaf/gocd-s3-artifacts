@@ -3,8 +3,10 @@ package com.indix.gocd.utils;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
-import static com.indix.gocd.utils.Constants.GO_SERVER_DASHBOARD_URL;
+import static com.indix.gocd.utils.Constants.*;
 
 /**
  * Wrapper around Go's Environment variables
@@ -51,6 +53,12 @@ public class GoEnvironment {
      * Version Format on S3 is <code>pipeline/stage/job/pipeline_counter.stage_counter</code>
      */
     public String artifactsLocationTemplate() {
+    	
+    	String s3Path = get(S3_PATH);
+    	if (StringUtils.isNotBlank(s3Path)) {
+    		return replaceEnv(s3Path);
+    	}
+    	
         String pipeline = get("GO_PIPELINE_NAME");
         String stageName = get("GO_STAGE_NAME");
         String jobName = get("GO_JOB_NAME");
@@ -63,5 +71,29 @@ public class GoEnvironment {
     public String artifactsLocationTemplate(String pipeline, String stageName, String jobName, String pipelineCounter, String stageCounter) {
         return String.format("%s/%s/%s/%s.%s", pipeline, stageName, jobName, pipelineCounter, stageCounter);
     }
-
+    
+    private String replaceEnv(String path) {
+    	int idx = path.indexOf("${");
+    	if (idx < 0) {
+    		return path;
+    	}
+    	StringBuilder sb = new StringBuilder();
+    	sb.append(path.substring(0, idx));
+    	int lastIdx = 0;
+    	while (idx >= 0) {
+    		int endIdx = path.indexOf("}", idx);
+    		
+    		String envName = path.substring(idx+2, endIdx);
+    		sb.append(get(envName));
+    		
+    		lastIdx = endIdx + 1;
+    		idx = path.indexOf("${", lastIdx);
+    		if (idx > 0) {
+    			sb.append(path.substring(lastIdx, idx));
+    		} else {
+    			sb.append(path.substring(lastIdx));
+    		}
+    	}
+    	return sb.toString();
+    }
 }

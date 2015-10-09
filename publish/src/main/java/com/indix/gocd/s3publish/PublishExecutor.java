@@ -91,7 +91,11 @@ public class PublishExecutor implements TaskExecutor {
     public AmazonS3Client s3Client(GoEnvironment env) {
         String accessKey = env.get(AWS_ACCESS_KEY_ID);
         String secretKey = env.get(AWS_SECRET_ACCESS_KEY);
-        return new AmazonS3Client(new BasicAWSCredentials(accessKey, secretKey));
+        String endPoint = env.get(S3_ENDPOINT);
+        
+        AmazonS3Client client = new AmazonS3Client(new BasicAWSCredentials(accessKey, secretKey));
+        client.setEndpoint(endPoint);
+        return client;
     }
 
     private void pushToS3(final TaskExecutionContext context, final GoEnvironment env, final S3ArtifactStore store, File localFileToUpload, String destination) {

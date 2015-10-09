@@ -81,10 +81,10 @@ public class PublishTask implements Task {
         return validationResult;
     }
 
-    public static List<Tuple2<String, String>> getSourceDestinations(String sourceDestinationsString) throws JSONException {
+	public static List<Tuple2<String, String>> getSourceDestinations(String sourceDestinationsString) throws JSONException {
         JSONArray sourceDestinations = new JSONArray(sourceDestinationsString);
         List<Tuple2<String, String>> result = new ArrayList<Tuple2<String, String>>();
-        for(int i =0; i < sourceDestinations.length(); i++) {
+        for(int i = 0; i < sourceDestinations.length(); i++) {
             JSONObject sourceDestination = (JSONObject)sourceDestinations.get(i);
             String source = trim(sourceDestination.getString("source"));
             String destination = trim(sourceDestination.getString("destination"));

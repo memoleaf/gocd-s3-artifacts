@@ -94,7 +94,9 @@ public class PublishExecutor implements TaskExecutor {
         String endPoint = env.get(S3_ENDPOINT);
         
         AmazonS3Client client = new AmazonS3Client(new BasicAWSCredentials(accessKey, secretKey));
-        client.setEndpoint(endPoint);
+        if (endPoint != null) {
+        	client.setEndpoint(endPoint);        	
+        }
         return client;
     }
 

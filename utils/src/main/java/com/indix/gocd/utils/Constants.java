@@ -10,4 +10,7 @@ public class Constants {
     public static final String SOURCEDESTINATIONS = "sourceDestinations";
     public static final String AWS_SECRET_ACCESS_KEY = "AWS_SECRET_ACCESS_KEY";
     public static final String AWS_ACCESS_KEY_ID = "AWS_ACCESS_KEY_ID";
+
+    public static final String S3_ENDPOINT = "S3_ENDPOINT";
+    public static final String S3_PATH = "S3_PATH";
 }
